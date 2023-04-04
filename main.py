@@ -1,3 +1,17 @@
+from setuptools import setup
+
+setup(
+    name='telegram-bot',
+    version='1.0',
+    description='Telegram bot',
+    install_requires=[
+        'telegram',
+        'python-telegram-bot==13.7.0',
+        'requests',
+        'beautifulsoup4'
+    ]
+)
+
 import telegram
 from telegram.ext import Updater, CommandHandler
 import requests

@@ -12,7 +12,12 @@ bot = telegram.Bot(token=TOKEN)
 # Функция для обработки команды /ras
 def replaces(update, context):
     # получаем страницу с сайта
+    try:
     response = requests.get('https://medcollege21.med.cap.ru/student/teoreticheskoe-obuchenie/zamena-zanyatij', timeout=10)
+except requests.exceptions.ConnectTimeout:
+    chat_id = update.message.chat_id
+    bot.send_message(chat_id=chat_id, text="Sorry, the request has timed out. Please try again later.")
+    return
     soup = BeautifulSoup(response.text, 'html.parser')
 
     # ищем все теги div с классом "attachfile_item_info"

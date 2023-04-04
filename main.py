@@ -10,9 +10,9 @@ TOKEN = '6153443552:AAGeiAKM7UfBhPJFc1Ot2c9goHUXdoWtDq0'
 bot = telegram.Bot(token=TOKEN)
 
 # Функция для обработки команды /ras
-def zam(update, context):
+def replaces(update, context):
     # получаем страницу с сайта
-    response = requests.get('https://medcollege21.med.cap.ru/student/teoreticheskoe-obuchenie/zamena-zanyatij')
+    response = requests.get('https://medcollege21.med.cap.ru/student/teoreticheskoe-obuchenie/zamena-zanyatij', timeout=10)
     soup = BeautifulSoup(response.text, 'html.parser')
 
     # ищем все теги div с классом "attachfile_item_info"
@@ -30,12 +30,12 @@ def zam(update, context):
 
     # отправляем файл пользователю
     chat_id = update.message.chat_id
-    bot.send_document(chat_id=chat_id, document=file.content, filename='zamena.docx')
+    bot.send_document(chat_id=chat_id, document=file.content, filename='Замена.docx')
 
 def start(update, context):
     # отправляем приветственное сообщение пользователю
     chat_id = update.message.chat_id
-    bot.send_message(chat_id=chat_id, text="Привет, напиши команду /zam, чтобы узнать актуальные замены занятий.")
+    bot.send_message(chat_id=chat_id, text="Привет, чтобы посмотреть замены выбери в меню команду или напиши /replaces")
 
 # Создаем объект Updater
 updater = Updater(token=TOKEN, use_context=True)
@@ -44,7 +44,7 @@ updater = Updater(token=TOKEN, use_context=True)
 dispatcher = updater.dispatcher
 
 # Регистрируем обработчик команды /ras
-dispatcher.add_handler(CommandHandler('zam', zam))
+dispatcher.add_handler(CommandHandler('replaces', replaces))
 dispatcher.add_handler(CommandHandler('start', start))
 
 # Запускаем бота
